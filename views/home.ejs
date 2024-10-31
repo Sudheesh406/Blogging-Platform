@@ -15,14 +15,14 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-brand" href="/home">Home</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/mypage">My Page</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/add">Add Blog</a>
+                        <a class="nav-link" href="/write">Add Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
@@ -34,20 +34,12 @@
 
     <!-- Blog Section -->
     <div class="container blog-container">
-        <div class="blog-post">
-            <h4>Blog Title 1</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis sem quis lorem vestibulum bibendum.</p>
-        </div>
-
-        <div class="blog-post">
-            <h4>Blog Title 2</h4>
-            <p>Sed quis nulla sit amet nulla auctor iaculis at in sapien. Integer porttitor viverra ex, at posuere sapien.</p>
-        </div>
-
-        <div class="blog-post">
-            <h4>Blog Title 3</h4>
-            <p>Cras sit amet erat et turpis euismod feugiat. Quisque fermentum neque in libero congue tristique.</p>
-        </div>
+            <% Blogs.forEach((Blog) => { %>
+                <div class="blog-post">
+                    <h4><%= Blog.title %></h4>
+                    <p><%= Blog.content %></p>
+                </div>
+            <% }) %>
     </div>
 </body>
 </html>

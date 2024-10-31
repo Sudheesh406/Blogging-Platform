@@ -1,21 +1,33 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
-const Blog = require("../models/blogSchema")
+const jwt = require('jsonwebtoken')
 
 //---------------CREATE USER DETAILS----------------//
+
+const secretKey = "newuser123"
 
 const createUser = async(req,res)=>{
     const { email, username, password } = req.body;
     try {
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             console.log("User already exists.");
             return res.status(400).render("create",{existingUser})
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.create({ username, email,password: hashedPassword });
+    await User.create({ username, email,password: hashedPassword })
+    .then((result) => {
+    let acessToken = jwt.sign({
+            id:result.id,
+            role:result.role    
+        },secretKey,{ expiresIn: '24h' })
+        res.cookie("token",acessToken)
+    }).catch((err) => {
+      console.log(err);  
+    });;
+
         console.log("User created.");
-        res.render('home'); 
+        res.redirect('/home');
     } catch (error) {
         console.error("Error creating user:", error);
         res.status(500).send("Error creating user.");
@@ -25,23 +37,29 @@ const createUser = async(req,res)=>{
 //---------------------LOGIN USER------------------//
 
 const loginUser = async(req,res)=>{
-    const {username,password} = req.body;
+    const {email,password} = req.body;
+    
         try {
-            const userFound = await User.findOne({username})
-            if(!userFound){
-                const errorFound = 1
+            const valid = await User.findOne({email:email})
+            if(!valid){
+                const errorFound = true
                 console.log("User not found.");
                 return res.status(404).render("login",{errorFound})
-            } else if (userFound.role == 'admin'){
+            } else if (valid.role == 'admin'){
                 res.redirect("admin")
             }else{
-            const correctPassword = await bcrypt.compare(password, userFound.password);
+            const correctPassword = await bcrypt.compare(password, valid.password);
             if(!correctPassword){
-                const errorFound = 1
+                const errorFound = true
                 console.log("invalid password");
                 return res.status(401).render("login",{errorFound})
             }else{
+                let acessToken = jwt.sign({
+                    id:valid.id,
+                    role:valid.role
+                },secretKey,{ expiresIn: '24h' })
                 console.log("Login successfully...");
+                res.cookie("token",acessToken)
                 res.redirect("home")
             }
         }
@@ -51,27 +69,5 @@ const loginUser = async(req,res)=>{
         }  
         }
     
-
-//-------------------BLOG SAVE-------------------//
-
-    const createBlog = async(req,res)=>{
-        const {title,content} =req.body
-        try {
-          let response =  await Blog.create({title,content});
-          if(response){
-            res.status(200).render('home')
-            console.log("Blog created");
-            console.log({title});
-          }else{
-            console.log("Blog creation failed...")
-            return res.status(400).send("Required fields missing.");
-          }
-        } catch (error) {
-            console.log(error);
-            res.status(500).send("Error Blog creating.");
-        }
-    }
-
-
-module.exports = {createUser,loginUser,createBlog}
+module.exports = {createUser,loginUser,secretKey}
   

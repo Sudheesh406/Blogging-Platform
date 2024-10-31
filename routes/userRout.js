@@ -1,11 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const {createUser,loginUser,createBlog} = require('../controllers/userControll');
+const {createUser,loginUser} = require('../controllers/userControll');
+const {createBlog,displayBlogHome,displayBlogMyPage,editingpage,editBlog,deleteBlog} = require('../controllers/blogControll')
 const { render } = require('ejs');
+const authentication  = require("../middlewares/auth")
+
 
 //------------LOGIN PAGE------------//
 
-router.get("/", (req, res) => {
+router.get("/",(req,res) => {
     res.render("login",
       {errorFound :false}
     )
@@ -17,7 +20,7 @@ router.get("/", (req, res) => {
 
  router.post("/",loginUser)
 
- router.get("/logout",(req,res)=>{
+ router.get("/logout",(req,res)=>{  
    res.render("login",{errorFound:false})
 })
 
@@ -29,32 +32,37 @@ router.get("/", (req, res) => {
    })
    });
  
-   router.post("/create",createUser);
+   router.post("/home",createUser);
 
 //-----------HOME PAGE-------------//
 
-router.get("/home" , (req,res)=>
-   {res.render('home')
-   })
+router.get("/home",authentication,displayBlogHome)
 
- //--------------ADD BLOG------------//  
+ //--------------BLOG ADD OR EDIT------------//  
 
- router.get("/add",(req,res)=>{
-    res.render("add")
+ router.get("/write",(req,res)=>{
+    res.render("write")
  })
 
- router.post("/add",createBlog)
+ router.post("/write",authentication,createBlog)
 
 //----------MY-PAGE------------//
 
-router.get("/mypage",(req,res)=>{
+router.get("/mypage",authentication,displayBlogMyPage,(req,res)=>{
    res.render("mypage")
 })
+router.post("/edit",editBlog);
+
 
 //-----------admin------------//
 
-router.get("/admin",(req,res)=>{
+router.get("/admin",authentication,(req,res)=>{
    res.render("admin")
 })
+
+router.get("/edit/:id", authentication,editingpage);
+router.get("/delete/:id", authentication, deleteBlog);
+
+
 
  module.exports = router;

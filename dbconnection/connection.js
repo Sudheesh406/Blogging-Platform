@@ -10,4 +10,4 @@ let userdetailDb = ()=>{
     }
 }
 
-module.exports = {userdetailDb}  // connecting database the name workers
+module.exports = {userdetailDb} 

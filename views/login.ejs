@@ -13,7 +13,7 @@
     <div class="login-container">
         <h2>Login</h2>
         <form action="/" method="post">
-            <input type="text" name="username" placeholder="Username" required>
+            <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <button class="login" type="submit">Login</button>
         </form>
@@ -24,8 +24,8 @@
     </div>
     <% if (errorFound) { %>
         <div class="popup-container">
-          <h2>invalid Username or Password</h2>
-          <p>Enter a valid Username and Password</p>
+          <h2>Invalid User</h2>
+          <p>Enter a valid Email and Password</p>
           <button onclick="window.history.back()">Okay</button>
         </div>    
         <% } %>
