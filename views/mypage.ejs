@@ -9,7 +9,6 @@
           rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
           crossorigin="anonymous">
-     
 </head>
 <body>
     <!-- Navbar -->
@@ -21,21 +20,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/home">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/add">Add Blog</a>
-                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-
     <!-- Blog Section -->
         <div class="container blog-container">
             <% Blogs.forEach((Blog) => { %>
                 <div class="blog-post">
                     <h4><%= Blog.title %></h4>
                     <p><%= Blog.content %></p>
-                     
                     <div class="actionDiv">
                         <a href="/edit/<%= Blog.id %>"><button class="actionBtn">Edit</button></a>
                        <a href="/delete/<%= Blog.id %>"><button class="actionBtn">Delete</button></a>

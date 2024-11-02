@@ -1,16 +1,13 @@
 const jwt = require('jsonwebtoken');
-// const user = require('../controllers/userControll')
-
 require("dotenv").config()
-console.log(process.env.SECRET_KEY);
 const authentication = async(req,res,next)=>{
-    let cookie = req.cookies?.token
-    if(!cookie){
+    let token = req.cookies?.token
+    if(!token){
         res.redirect("/")
     }else{
-        const user = await jwt.verify(cookie,process.env.SECRET_KEY);  
-        if(user){
-            req.user = user;
+        const User = await jwt.verify(token,process.env.SECRET_KEY);  
+        if(User){
+            req.user = User;
             next();
         }else{
             res.redirect("/")
@@ -18,11 +15,5 @@ const authentication = async(req,res,next)=>{
     }
 }
 
-// const logout = (req,res,next)=>{  
-//     // let cookie = req.cookies?.token
-//     res.clearCookie("token");
-//     res.end()
-//     next()
-// }
 
 module.exports = authentication    

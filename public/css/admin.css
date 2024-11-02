@@ -42,3 +42,30 @@ body {
     display: flex;
     justify-content: end;
 }
+
+.actionBtn{
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.actionBtn:hover {
+    background-color: #218838;   
+}
+
+.actionDiv{
+    width: 95%;
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+.user{
+    color:  #218838; 
+    display: flex;
+    justify-content: end;  
+ }

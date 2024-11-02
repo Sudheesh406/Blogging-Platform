@@ -47,3 +47,9 @@ body {
     justify-content: end;
     gap: 10px;
 }
+
+.user{
+   color:  #218838; 
+   display: flex;
+   justify-content: end;  
+}

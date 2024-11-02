@@ -9,7 +9,6 @@
           rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
           crossorigin="anonymous">
-     
 </head>
 <body>
     <!-- Navbar -->
@@ -31,13 +30,15 @@
             </div>
         </div>
     </nav>
-
     <!-- Blog Section -->
     <div class="container blog-container">
             <% Blogs.forEach((Blog) => { %>
                 <div class="blog-post">
-                    <h4><%= Blog.title %></h4>
+                    <h3><%= Blog.title %></h3>
                     <p><%= Blog.content %></p>
+                    <div class="user">
+                        <h5>@<%= Blog.author.username %></h5>   
+                    </div>
                 </div>
             <% }) %>
     </div>

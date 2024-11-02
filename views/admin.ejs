@@ -9,13 +9,12 @@
           rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
           crossorigin="anonymous">
-     
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="/admin"> Admin Blog Home</a>
+            <a class="navbar-brand" href="/admin"> Admin</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -25,13 +24,21 @@
             </div>
         </div>
     </nav>
-
     <!-- Blog Section -->
     <div class="container blog-container">
-        <div class="blog-post">
-            <h4>Blog Title 1</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis sem quis lorem vestibulum bibendum.</p>
-        </div>
+        <% Blogs.forEach((Blog) => { %>
+            <div class="blog-post">
+                <div class="user">
+                    <h5>USER : @<%= Blog.author.username %></h5>   
+                </div>
+                <h4><%= Blog.title %></h4>
+                <p><%= Blog.content %></p>
+                <div class="actionDiv">
+                    <a href="/rewrite/<%= Blog.id %>"><button class="actionBtn">Edit</button></a>
+                   <a href="/clear/<%= Blog.id %>"><button class="actionBtn">Delete</button></a>
+                </div>
+            </div>
+        <% }) %>
     </div>
 </body>
 </html>
