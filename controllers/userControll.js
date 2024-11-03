@@ -31,21 +31,51 @@ const createUser = async(req,res)=>{
     }
 }
 
+//------------------------ACESS CANCEL---------------------//
+    let holdUser = null;
+ const acessCancel = async (id)=>{
+    try{ 
+     holdUser = await User.findOne({_id:id});
+     if (!holdUser) {
+        console.log("User not found for hold.");
+    } else {
+        console.log("User hold:", holdUser);
+    } 
+ }catch(error){
+    console.log(error);
+}   
+ }    
+const acessApprove = async (id)=>{
+    if (holdUser && holdUser.id === id) {
+        holdUser = null;
+        console.log("User access approved and hold released.");
+    }else{
+        console.log("not matching....");  
+    }
+}
+
 //-----------------------LOGIN USER------------------------------//
 const loginUser = async(req,res)=>{
     const {email,password} = req.body;
         try {
             const valid = await User.findOne({email:email})
             if(!valid){
-                const errorFound = true
+                const errorFound = 1
                 console.log("User not found.");
                 return res.status(404).render("login",{errorFound})
-            } else if (valid.role == 'admin'){
+
+            }else if (holdUser && valid._id.toString() === holdUser._id.toString()) {
+                const errorFound = 2
+                console.log("Acess Denied");
+                return res.status(401).render("login",{errorFound})
+
+            } else if (valid.role == 'admin'){ 
                 const correctPassword = await bcrypt.compare(password, valid.password);
                 if(!correctPassword){
-                    const errorFound = true
+                    const errorFound = 1
                     console.log("invalid password");
                     return res.status(401).render("login",{errorFound})
+
                 }else {
                     let acessToken = jwt.sign({
                         id:valid.id,
@@ -55,12 +85,14 @@ const loginUser = async(req,res)=>{
                     res.cookie("token",acessToken)
                 res.redirect("admin")
           }
+
             }else{
             const correctPassword = await bcrypt.compare(password, valid.password);
             if(!correctPassword){
-                const errorFound = true
+                const errorFound = 1
                 console.log("invalid password");
                 return res.status(401).render("login",{errorFound})
+
             }else{
                 let acessToken = jwt.sign({
                     id:valid.id,
@@ -71,6 +103,7 @@ const loginUser = async(req,res)=>{
                 res.redirect("home")
             }
         }    
+        
         } catch (error) {
             console.error("Error to login:", error);
             res.status(500).send("Error login user.");
@@ -83,4 +116,4 @@ const loginUser = async(req,res)=>{
             res.redirect("/")
         }
 
-module.exports = {createUser,loginUser,secretKey,logoutUser}
+module.exports = {createUser,loginUser,secretKey,logoutUser,acessCancel,acessApprove}

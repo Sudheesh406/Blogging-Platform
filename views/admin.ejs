@@ -36,6 +36,8 @@
                 <div class="actionDiv">
                     <a href="/rewrite/<%= Blog.id %>"><button class="actionBtn">Edit</button></a>
                    <a href="/clear/<%= Blog.id %>"><button class="actionBtn">Delete</button></a>
+                   <a href="/unActive/<%= Blog.author._id %>"><button class="actionBtn">Block Acess</button></a>
+                   <a href="/active/<%= Blog.author._id %>"><button class="actionBtn">Allow Access</button></a>
                 </div>
             </div>
         <% }) %>

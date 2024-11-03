@@ -10,7 +10,7 @@
 </head>
 <body>
   <section class="loginSection">
-    <img class="loginBanner" src ="/img\natural-evening-landscape-with-green-hills_126523-20.avif" >
+    <img class="loginBanner" src ="/img\blog-684748_640.jpg" >
     <div class="login-container">
         <h2>Login</h2>
         <form action="/" method="post">
@@ -22,13 +22,19 @@
           Create New
         </button></a>
     </div>
-    <% if (errorFound) { %>
+    <% if (errorFound === 2) { %>
         <div class="popup-container">
-          <h2>Invalid User</h2>
-          <p>Enter a valid Email and Password</p>
+          <h2>Acess Denied</h2>
+          <p>Your account has been blocked</p>
           <button onclick="window.history.back()">Okay</button>
         </div>    
-        <% } %>
+        <% } else if (errorFound === 1){ %>
+          <div class="popup-container">
+            <h2>Invalid User</h2>
+            <p>Enter a valid Email and Password</p>
+            <button onclick="window.history.back()">Okay</button>
+          </div> 
+          <% } %>
        </section>
 </body>
 </html>

@@ -1,5 +1,5 @@
 const Blog = require("../models/blogSchema");
-const user = require("../controllers/userControll");
+const {acessCancel,acessApprove} = require("../controllers/userControll");
 
 //--------------------CREATE BLOG-------------------------//
 const createBlog = async (req, res) => {
@@ -96,6 +96,19 @@ const deleteBlogAdmin = async (req, res) => {
   }
 };
 
+// ------------------------BLOCK USER-------------------------//
+const unActive = async (req, res) => {
+  const id = req.params.id;
+    acessCancel(id)
+    res.redirect("/admin");
+}
+
+const active = async (req,res)=>{
+  const id = req.params.id;
+  acessApprove(id)
+  res.redirect("/admin");
+}
+
 // ---------------------------BLOG-------------------------------//
 let editingId;
 const displayBlog = async (req, res) => {
@@ -147,5 +160,7 @@ module.exports = {
   createBlog,
   editBlog,
   deleteBlogAdmin,
-  deleteBlogUser
+  deleteBlogUser,
+  active,
+  unActive
 };
