@@ -1,18 +1,15 @@
 const Blog = require("../models/blogSchema");
-const {acessCancel,acessApprove} = require("../controllers/userControll");
+// const { acessCancel, acessApprove } = require("../controllers/userControll");
 
 //--------------------CREATE BLOG-------------------------//
 const createBlog = async (req, res) => {
   const { title, content } = req.body;
-  console.log(content);
   const id = req.user.id;
-  console.log(id, "userId");
   try {
     let response = await Blog.create({ title, content, author: id });
     if (response) {
-      res.status(200).redirect("home");
       console.log("Blog created");
-      console.log({ title });
+      res.status(200).redirect("/home");
     } else {
       console.log("Blog creation failed...");
       return res.status(400).send("Required fields missing.");
@@ -24,15 +21,7 @@ const createBlog = async (req, res) => {
 };
 
 // --------------------DISPLAY BLOG------------------------//
-const displayHome = async (req, res) => {
-    try {
-      const Blogs = await Blog.find().populate("author","username"); // Populate author to include full User data
-      res.render("home", { Blogs });
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-      res.status(500).send("Error loading blogs...");
-    }
-  };
+
 
 const displayMyPage = async (req, res) => {
   try {
@@ -46,7 +35,7 @@ const displayMyPage = async (req, res) => {
 
 const displayAdminPage = async (req, res) => {
   try {
-    const Blogs = await Blog.find().populate("author","username");
+    const Blogs = await Blog.find().populate("author", "username status");
     res.render("admin", { Blogs });
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -58,12 +47,11 @@ const displayAdminPage = async (req, res) => {
 const deleteBlogUser = async (req, res) => {
   const id = req.params.id;
   console.log("id", id);
+
   try {
     let response = await Blog.findOne({ _id: id });
     if (response) {
       await Blog.deleteOne({ _id: response.id });
-      console.log(response, "response");
-      console.log(id, "id");
       console.log("Deleted successfully...");
       res.redirect("/mypage");
     } else {
@@ -79,12 +67,11 @@ const deleteBlogUser = async (req, res) => {
 const deleteBlogAdmin = async (req, res) => {
   const id = req.params.id;
   console.log("id", id);
+
   try {
     let response = await Blog.findOne({ _id: id });
     if (response) {
       await Blog.deleteOne({ _id: response.id });
-      console.log(response, "response");
-      console.log(id, "id");
       console.log("Deleted successfully...");
       res.redirect("/admin");
     } else {
@@ -96,24 +83,12 @@ const deleteBlogAdmin = async (req, res) => {
   }
 };
 
-// ------------------------BLOCK USER-------------------------//
-const unActive = async (req, res) => {
-  const id = req.params.id;
-    acessCancel(id)
-    res.redirect("/admin");
-}
-
-const active = async (req,res)=>{
-  const id = req.params.id;
-  acessApprove(id)
-  res.redirect("/admin");
-}
-
 // ---------------------------BLOG-------------------------------//
 let editingId;
 const displayBlog = async (req, res) => {
   const id = req.params.id;
   editingId = id;
+
   try {
     const blog = await Blog.findById(id);
     if (blog) {
@@ -131,6 +106,7 @@ const displayBlog = async (req, res) => {
 const editBlog = async (req, res) => {
   const updates = req.body;
   console.log("edit person :", req.user.role);
+
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(editingId, updates, {
       new: true,
@@ -151,16 +127,12 @@ const editBlog = async (req, res) => {
   }
 };
 
-
 module.exports = {
-  displayHome,
   displayBlog,
   displayMyPage,
   displayAdminPage,
   createBlog,
   editBlog,
   deleteBlogAdmin,
-  deleteBlogUser,
-  active,
-  unActive
+  deleteBlogUser
 };

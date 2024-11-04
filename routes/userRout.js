@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { createUser, loginUser,logoutUser } = require("../controllers/userControll");
-const { displayHome, displayBlog, displayMyPage, displayAdminPage,
-  createBlog, editBlog, deleteBlogAdmin, deleteBlogUser,active,unActive } = require("../controllers/blogControll");
+const { createUser, loginUser,logoutUser,active,unActive,homeRender} = require("../controllers/userControll");
+const { displayBlog, displayMyPage, displayAdminPage,
+  createBlog, editBlog, deleteBlogAdmin, deleteBlogUser } = require("../controllers/blogControll");
 const { render } = require("ejs");
 const authentication = require("../middlewares/auth");
 
@@ -19,7 +19,7 @@ router.get("/create", (req, res) => {
 router.post("/home", createUser);
 
 //-----------------------HOME PAGE---------------------------//
-router.get("/home", authentication, displayHome);
+router.get("/home", authentication, homeRender);
 
 //------------------------NEW BLOG-----------------------------//
 router.get("/write", (req, res) => {

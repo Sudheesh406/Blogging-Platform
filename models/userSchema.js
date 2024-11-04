@@ -18,6 +18,10 @@ const userSchema = mongoose.Schema({
         type :String,
         enum:['User','admin'],
         default:'User'
+    },
+    status:{
+        type:Boolean,
+        default:true
     }
 })
 
