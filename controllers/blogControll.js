@@ -1,5 +1,4 @@
 const Blog = require("../models/blogSchema");
-// const { acessCancel, acessApprove } = require("../controllers/userControll");
 
 //--------------------CREATE BLOG-------------------------//
 const createBlog = async (req, res) => {
@@ -21,8 +20,6 @@ const createBlog = async (req, res) => {
 };
 
 // --------------------DISPLAY BLOG------------------------//
-
-
 const displayMyPage = async (req, res) => {
   try {
     const Blogs = await Blog.find({ author: req.user.id });
@@ -112,9 +109,9 @@ const editBlog = async (req, res) => {
       new: true,
     });
     if (updatedBlog) {
-      console.log(req.user.id);
       if (req.user.role == "admin") {
         res.status(200).redirect("/admin");
+
       } else {
         res.status(200).redirect("/mypage");
       }

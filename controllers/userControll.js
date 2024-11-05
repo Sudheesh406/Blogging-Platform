@@ -1,6 +1,5 @@
 const User = require("../models/userSchema");
 const Blog = require('../models/blogSchema')
-// const {displayHome} = require("../controllers/blogControll")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -81,13 +80,12 @@ async function acessApprove (id){
   }
 };
 
-
 const displayHome = async () => {
       const Blogs = await Blog.find().populate("author", "username");
       return Blogs  
   };
 
-    async function homeRender (req,res){
+  async function homeRender (req,res){
     let Blogs =  await displayHome()
     let id = req.user.id
     let user = await User.findById(id)
@@ -98,7 +96,6 @@ const displayHome = async () => {
 //-----------------------LOGIN USER------------------------------//
 const loginUser = async (req, res) => {
     let Blogs = await displayHome();  
-  
   const { email, password } = req.body;
 
   try {
@@ -160,6 +157,7 @@ const loginUser = async (req, res) => {
   }
 };
 
+//------------------------active && unActive---------------------//
  async function unActive (req, res){
     const id = req.params.id;
     acessCancel(id);

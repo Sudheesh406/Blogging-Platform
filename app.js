@@ -1,6 +1,6 @@
 const connection = require('./dbconnection/connection.js')
 const user = require('./models/userSchema')
-const express =require("express")
+const express = require("express")
 const app = express()
 const path = require("path")
 const userRoute = require('./routes/userRout')
@@ -16,7 +16,7 @@ connection.userdetailDb()
  app.set("views",path.join(__dirname,"views"))
  app.use(cookieParser())
 
-  app.use('/',userRoute)
+ app.use('/',userRoute)
 
  app.listen(3000, (err) => {
      if(err){
