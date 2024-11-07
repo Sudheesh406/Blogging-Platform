@@ -41,7 +41,7 @@ const createUser = async (req, res) => {
   }
 };
 
-//--------------------------USER-ACESS--------------------------//
+//--------------------------USER ACESS--------------------------//
 async function acessCancel (id){
   try {
     const response = await User.findByIdAndUpdate(
@@ -80,6 +80,7 @@ async function acessApprove (id){
   }
 };
 
+//--------------------------HOME PAGE-----------------------------//
 const displayHome = async () => {
       const Blogs = await Blog.find().populate("author", "username");
       return Blogs  
@@ -134,7 +135,7 @@ const loginUser = async (req, res) => {
         if (!correctPassword) {
           const errorFound = 1;
           console.log("invalid password");
-          return res.status(401).render("login", { errorFound });
+          return res.status(401).render("login", { errorFound }); 
         } else {
           let acessToken = jwt.sign(
             {
@@ -170,7 +171,7 @@ const loginUser = async (req, res) => {
     res.redirect("/admin");
   };
   
-// ------------------------------LOGOUTUSER---------------------------//
+// ------------------------------LOGOUT USER---------------------------//
 const logoutUser = (req, res) => {
   res.clearCookie("token");
   res.redirect("/");
